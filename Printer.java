@@ -171,6 +171,7 @@ public class Printer {
 	 */
 	public void turnOff() {
 		isOn = false;
+		System.out.println(this.getPrinterName() + " is now off.\n");
 	}
 	
 	/**
@@ -331,6 +332,8 @@ public class Printer {
 		printer.printBlackandWhite(250);
 		printer.refillInk();
 		printer.printBlackandWhite(250);
+		
+		printer.turnOff();
 		
 		System.out.println(printer.toString());
 		
