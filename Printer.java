@@ -13,7 +13,7 @@ public class Printer {
 		/** Will model a printer Ink Cartridge
 		 * 
 		 */
-		public InkCartridge() {
+		private InkCartridge() {
 			blackInkLeft = 100;
 			redInkLeft = 100;
 			greenInkLeft = 100;
@@ -63,7 +63,7 @@ public class Printer {
 	 */
 	public class PaperTray {
 		
-		public PaperTray() {
+		private PaperTray() {
 			numberOfPapers = maxNumOfPapers;
 			isOpen = false;
 		}
@@ -71,7 +71,7 @@ public class Printer {
 
 		private boolean isOpen;
 		private double numberOfPapers;
-		private double maxNumOfPapers = 500;
+		int maxNumOfPapers = 500;
 		
 		/**
 		 * Opens the paper tray.
@@ -135,7 +135,7 @@ public class Printer {
 	// ------------------------- Members/State -------------------------
 	private boolean isOn;
 	private String printerName;
-	private PaperTray paperCartridge = new PaperTray();
+	private PaperTray paperTray = new PaperTray();
 	private InkCartridge inkCartridge = new InkCartridge();
 	
 	// ------------------------- END Members -------------------------
@@ -191,13 +191,13 @@ public class Printer {
 		
 		System.out.println("Printing " + numOfCopies + " pages in color.");
 		
-		paperCartridge.numberOfPapers -= numOfCopies;
+		paperTray.numberOfPapers -= numOfCopies;
 		inkCartridge.blueInkLeft -= numOfCopies * 0.2;
 		inkCartridge.greenInkLeft -= numOfCopies * 0.2;
 		inkCartridge.redInkLeft -= numOfCopies * 0.2;
 		
 		inkCartridge.getInkStatus();
-		paperCartridge.displayNumberOfPapers();
+		paperTray.displayNumberOfPapers();
 		
 		System.out.println("Color print successful!\n");
 		
@@ -216,19 +216,19 @@ public class Printer {
 		
 		System.out.println("Printing " + numOfCopies + " pages in black.");
 		
-		paperCartridge.numberOfPapers -= numOfCopies;
+		paperTray.numberOfPapers -= numOfCopies;
 		inkCartridge.blackInkLeft -= numOfCopies * 0.2;
 
 		
 		inkCartridge.getInkStatus();
-		paperCartridge.displayNumberOfPapers();
+		paperTray.displayNumberOfPapers();
 		
 		System.out.println("Black print successful!\n");
 		
 		return true;
 	}
 	
-	/** checks the printer to see if it is on, and if it has enough ink and paper for the 
+	/** Checks the printer to see if it is on, and if it has enough ink and paper for the 
 	 * requested printing job.
 	 * 
 	 * @param numOfCopies:int  the number of copies to check if printer has enough paper and ink for.
@@ -244,11 +244,11 @@ public class Printer {
 		
 		System.out.println("Checking for required ink and paper for requested job...");
 
-		if ( (paperCartridge.numberOfPapers - numOfCopies) < 0) {
+		if ( (paperTray.numberOfPapers - numOfCopies) < 0) {
 			System.err.println(printerName + " does not have enough paper to print " + 
 				numOfCopies + " pages.");
 			
-			paperCartridge.displayNumberOfPapers();
+			paperTray.displayNumberOfPapers();
 			System.out.println("\n");
 			
 			return false;
@@ -276,25 +276,30 @@ public class Printer {
 		
 		return true;
 
+	} // END checkForEnough()
+	
+	/** Calls the refillPaper method of the paperCartridge instance.
+	 * 
+	 */
+	public void refillPaper() {
+		paperTray.refillPaper();
 	}
 	
-	public void refillPaper() {
-		paperCartridge.refillPaper();
-	}
-	private void refillInk() {
+	/** Calls the refillInk method of the inkCartridge instance.
+	 * 
+	 */
+	public void refillInk() {
 		inkCartridge.refillInk();
 	}
 
 	
 	@Override
 	public String toString() {
-		return "Printer [isOn=" + isOn + ", printerName=" + printerName + ",\npaperCartridge=" + paperCartridge
+		return "Printer [isOn=" + isOn + ", printerName=" + printerName + ",\npaperTray=" + paperTray
 				+ ",\ninkCartridge=" + inkCartridge + "]\n\n";
 	}
 
 
-
-	
 	// ------------------------- END Methods -------------------------
 	
 	
